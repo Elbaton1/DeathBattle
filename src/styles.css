@@ -51,7 +51,7 @@ body {
 
 .comic-title {
   font-size: 3rem;
-  color: #ffffff;
+  color: #000000;
   text-shadow: 2px 2px #ff0000;
   margin-bottom: 20px;
 }
@@ -65,7 +65,7 @@ body {
 .comic-label {
   margin-top: 10px;
   font-size: 1.2rem;
-  color: #cccccc;
+  color: #000000;
 }
 
 .comic-image {
@@ -80,7 +80,7 @@ body {
 
 .comic-powerstats-list li {
   font-size: 1.1rem;
-  color: #ffffff;
+  color: #000000;
   margin-bottom: 8px;
 }
 
@@ -114,13 +114,13 @@ body {
 
 .comic-commentary-title {
   font-size: 1.8rem;
-  color: #ffffff;
+  color: #000000;
   margin-top: 30px;
 }
 
 .comic-commentary {
   font-size: 1.2rem;
-  color: #cccccc;
+  color: #000000;
   line-height: 1.5;
 }
 
@@ -189,8 +189,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+
   background: red;
   opacity: 0.1;
   z-index: 0;
@@ -230,6 +229,5 @@ body {
   width: 100%;
   bottom: 0;
 }
-
 
   

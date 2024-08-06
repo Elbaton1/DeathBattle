@@ -5,7 +5,7 @@ import '../../styles.css'; // Ensure this path is correct based on your project 
 const Footer = () => {
   return (
     <Box className="footer">
-      <Typography variant="body2" color="inherit">
+      <Typography variant="body2" >
         &copy; {new Date().getFullYear()} DEATH BATTLE AI. All rights reserved.
       </Typography>
     </Box>

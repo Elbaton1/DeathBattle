@@ -7,36 +7,31 @@ import HeroVsVillain from './components/HeroVsVillain';
 import Home from './components/Home';
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2193b0',
-    },
-    secondary: {
-      main: '#6dd5ed',
-    },
-  },
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
 });
 
-const App = () => {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/battle" element={<HeroVsVillain />} />
-        </Routes>
-        <Footer />
+      <Router basename="/DeathBattle">
+        <div className="App">
+          <Header />
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/battle" element={<HeroVsVillain />} />
+          </Routes>
+          <Footer />
+        </div>
       </Router>
     </ThemeProvider>
   );
-};
+}
 
 export default App;
+
 
 
 
