@@ -228,6 +228,7 @@ body {
   position: fixed;
   width: 100%;
   bottom: 0;
+  display: none;
 }
 
 /* Modal Styles */
@@ -284,4 +285,46 @@ body {
   font-size: 1.2rem;
   color: #000000;
   line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .subtitle {
+    font-size: 1.2rem;
+  }
+  .comic-title {
+    font-size: 2.5rem;
+  }
+  .comic-subtitle {
+    font-size: 1.2rem;
+  }
+  .button, .comic-button, .comic-clear-button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  .card-title {
+    font-size: 1.5rem;
+  }
+  .card-text {
+    font-size: 1rem;
+  }
+  .header {
+    font-size: 2rem;
+    padding: 15px;
+  }
+  .header a {
+    font-size: 1rem;
+    margin: 0 10px;
+  }
+  .footer {
+    font-size: 1rem;
+    padding: 15px;
+    display: none;
+  }
+  .winner-modal {
+    width: 80%;
+  }
 }
