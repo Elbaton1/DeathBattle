@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const OPENAI_API_KEY = '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';
 
 export const generateDalleImage = async (prompt) => {
   try {

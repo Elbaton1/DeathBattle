@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Box, Button, Typography, MenuItem, Select, Grid, Card, CardContent, CardMedia, Paper, Alert, Modal, Backdrop, Fade, TextField, InputAdornment, CircularProgress } from '@mui/material';
+import { Container, Box, Button, Typography, MenuItem, Select, Grid, Card, CardContent, CardMedia, Paper, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import heroesData from '../api/all.json'; // Import the local JSON file
-import './HeroVsVillain.css'; // Import the CSS file
+import heroesData from '../api/all.json';
+import '../styles.css';
 
 const HeroVsVillain = () => {
   const [hero1Id, setHero1Id] = useState('');
   const [hero2Id, setHero2Id] = useState('');
   const [hero1, setHero1] = useState(null);
   const [hero2, setHero2] = useState(null);
-  const [commentary, setCommentary] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [winner, setWinner] = useState(null);
-  const [showWinner, setShowWinner] = useState(false);
-  const [error, setError] = useState('');
+  const [battleDetails, setBattleDetails] = useState(null);
   const [searchTerm1, setSearchTerm1] = useState('');
   const [searchTerm2, setSearchTerm2] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
   useEffect(() => {
     const hero1 = heroesData.find(hero => hero.id === hero1Id);
@@ -29,73 +21,64 @@ const HeroVsVillain = () => {
     setHero2(hero2);
   }, [hero1Id, hero2Id]);
 
-  const generateCommentary = async (hero1, hero2) => {
-    setLoading(true); // Show loading indicator
-    try {
-      const prompt = `Generate a detailed battle commentary between ${hero1.name} and ${hero2.name}, using real comic book knowledge. Include a brief background of each fighter, their strengths and weaknesses, who would win and why, and possible events in the fight. Use their stats and abilities from comic books to determine the winner. If it's too close to call, declare it a draw. At the end of the commentary, clearly state the winner in the format: "And the winner is: [Winner's Name]." If it's a draw, state: "And the result is: Draw." Ensure the last sentence clearly states the winner or draw. Keep the response within 500 tokens.`;
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'system', content: 'You are a detailed battle commentator.' }, { role: 'user', content: prompt }],
-          max_tokens: 490,
-          temperature: 0.7,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${OPENAI_API_KEY}`,
-          },
-        }
-      );
-      const commentaryText = response.data.choices[0].message.content;
-      setCommentary(commentaryText);
+  const determineWinner = (hero1, hero2) => {
+    const stats1 = hero1.powerstats;
+    const stats2 = hero2.powerstats;
 
-      // Extract the winner or draw from the commentary
-      const winnerMatch = commentaryText.match(/And the (winner is|result is): (.+?)\./i);
-      if (winnerMatch && winnerMatch[2]) {
-        setWinner(winnerMatch[2]);
+    let hero1Score = 0;
+    let hero2Score = 0;
+    const statComparison = {};
+
+    Object.keys(stats1).forEach(stat => {
+      if (stats1[stat] > stats2[stat]) {
+        hero1Score++;
+        statComparison[stat] = `${hero1.name} wins in ${stat}`;
+      } else if (stats1[stat] < stats2[stat]) {
+        hero2Score++;
+        statComparison[stat] = `${hero2.name} wins in ${stat}`;
       } else {
-        setWinner("Winner not found");
+        statComparison[stat] = `Both are equal in ${stat}`;
       }
-    } catch (error) {
-      console.error('Error generating commentary:', error.response ? error.response.data : error.message);
-      setError(error.response && error.response.data ? JSON.stringify(error.response.data) : error.message);
-    } finally {
-      setLoading(false); // Hide loading indicator
+    });
+
+    let winner;
+    if (hero1Score > hero2Score) {
+      winner = hero1.name;
+    } else if (hero2Score > hero1Score) {
+      winner = hero2.name;
+    } else {
+      winner = 'Draw';
     }
+
+    const strengthsWeaknesses = {
+      hero1: hero1.biography,
+      hero2: hero2.biography,
+    };
+
+    const narrative = generateBattleNarrative(hero1, hero2, statComparison, winner);
+
+    return {
+      winner,
+      statComparison,
+      strengthsWeaknesses,
+      narrative,
+    };
   };
 
-  const generateImage = async (hero1, hero2) => {
-    try {
-      const prompt = `A detailed illustration of a battle between ${hero1.name} and ${hero2.name}, showcasing their powers in action.`;
-      const response = await axios.post(
-        'https://api.openai.com/v1/images/generations',
-        {
-          prompt,
-          n: 1,
-          size: '1024x1024',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${OPENAI_API_KEY}`,
-          },
-        }
-      );
-      setImageUrl(response.data.data[0].url);
-    } catch (error) {
-      console.error('Error generating image:', error.response ? error.response.data : error.message);
-      setError(error.response && error.response.data ? JSON.stringify(error.response.data) : error.message);
-    }
+  const generateBattleNarrative = (hero1, hero2, statComparison, winner) => {
+    let narrative = `In an epic battle between ${hero1.name} and ${hero2.name}, both heroes fought valiantly. `;
+    narrative += `${hero1.name} started off strong, leveraging their ${statComparison.intelligence || 'intelligence'} and ${statComparison.strength || 'strength'} to gain an advantage. `;
+    narrative += `${hero2.name}, however, was not to be outdone and countered with their superior ${statComparison.speed || 'speed'} and ${statComparison.combat || 'combat skills'}. `;
+    narrative += `Throughout the battle, ${hero1.name} demonstrated ${hero1.biography.alignment} qualities, while ${hero2.name} showed ${hero2.biography.alignment} traits. `;
+    narrative += `In the end, ${winner === 'Draw' ? 'neither hero emerged as the clear winner, resulting in a draw' : `${winner} emerged as the victor due to their superior ${statComparison[Object.keys(statComparison).find(stat => stat.includes(winner.toLowerCase()))]}`}.`;
+
+    return narrative;
   };
 
-  const handleGenerateBattle = async () => {
+  const handleGenerateBattle = () => {
     if (hero1 && hero2) {
-      setShowWinner(false); // Hide winner initially
-      await generateCommentary(hero1, hero2);
-      await generateImage(hero1, hero2);
-      setShowWinner(true); // Show winner after generation
+      const details = determineWinner(hero1, hero2);
+      setBattleDetails(details);
     }
   };
 
@@ -122,10 +105,7 @@ const HeroVsVillain = () => {
     setHero2Id('');
     setHero1(null);
     setHero2(null);
-    setCommentary('');
-    setImageUrl('');
-    setWinner(null);
-    setShowWinner(false);
+    setBattleDetails(null);
     setSearchTerm1('');
     setSearchTerm2('');
   };
@@ -147,16 +127,8 @@ const HeroVsVillain = () => {
         <Typography variant="h6" className="comic-subtitle" gutterBottom>
           Select two superheroes or villains to see who would win based on their stats, and generate a detailed battle scene.
         </Typography>
-        <Typography variant="body1" className="comic-instructions">
-          Type a hero's name and then select from the dropdown menu. Repeat for both heroes. or just press the dropdown menu to scroll through what we have
-        </Typography>
-        {error && (
-          <Box sx={{ my: 2 }}>
-            <Alert severity="error">{error}</Alert>
-          </Box>
-        )}
         <Paper sx={{ p: 2, mb: 4, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -258,51 +230,32 @@ const HeroVsVillain = () => {
               </Button>
             </Box>
           )}
-          {loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-              <CircularProgress />
-            </Box>
-          )}
-          {commentary && (
+          {battleDetails && (
             <Box sx={{ my: 4 }}>
-              <Typography variant="h4" className="comic-commentary-title">Battle Commentary</Typography>
+              <Typography variant="h4" className="comic-commentary-title">Battle Winner</Typography>
               <Typography variant="body1" className="comic-commentary" paragraph>
-                {commentary.split('\n').map((line, index) => (
-                  <span key={index}>{line}<br /></span>
+                {battleDetails.winner}
+              </Typography>
+              <Typography variant="h4" className="comic-commentary-title">Stats Comparison</Typography>
+              <Typography variant="body1" className="comic-commentary" paragraph>
+                {Object.keys(battleDetails.statComparison).map(stat => (
+                  <div key={stat}>
+                    {battleDetails.statComparison[stat]}
+                  </div>
                 ))}
+              </Typography>
+              <Typography variant="h4" className="comic-commentary-title">Strengths & Weaknesses</Typography>
+              <Typography variant="body1" className="comic-commentary" paragraph>
+                {battleDetails.hero1}: {battleDetails.strengthsWeaknesses.hero1.alignment}
+                <br />
+                {battleDetails.hero2}: {battleDetails.strengthsWeaknesses.hero2.alignment}
+              </Typography>
+              <Typography variant="h4" className="comic-commentary-title">Battle Narrative</Typography>
+              <Typography variant="body1" className="comic-commentary" paragraph>
+                {battleDetails.narrative}
               </Typography>
             </Box>
           )}
-          {imageUrl && (
-            <Box sx={{ my: 4 }}>
-              <Typography variant="h4" className="comic-image-title">Battle Scene</Typography>
-              <Card sx={{ maxWidth: '100%', mx: 'auto' }}>
-                <CardMedia component="img" sx={{ maxWidth: '100%', height: 'auto' }} image={imageUrl} alt="Battle Scene" className="comic-image-generated" />
-              </Card>
-            </Box>
-          )}
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={showWinner}
-            onClose={() => setShowWinner(false)}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={showWinner}>
-              <Box className="winner-modal">
-                <Typography id="transition-modal-title" variant="h2" component="h2">
-                  Winner!
-                </Typography>
-                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                  {winner}
-                </Typography>
-              </Box>
-            </Fade>
-          </Modal>
         </Paper>
       </Box>
     </Container>
@@ -310,6 +263,13 @@ const HeroVsVillain = () => {
 };
 
 export default HeroVsVillain;
+
+
+
+
+
+
+
 
 
 

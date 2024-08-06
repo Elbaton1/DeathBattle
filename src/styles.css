@@ -1,0 +1,235 @@
+/* styles.css */
+
+/* General Styles */
+body {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  background: linear-gradient(to right, #641212, #0c0a65);
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 3.5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px #ff0000;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  color: #cccccc;
+  margin-bottom: 30px;
+}
+
+.button {
+  background: #007bff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 15px 30px;
+  border-radius: 15px;
+  margin-top: 20px;
+  
+}
+
+.button:hover {
+  background: #0056b3;
+}
+
+/* HeroVsVillain Styles */
+.comic-container {
+  background: linear-gradient(to right, #1a1a1a, #333333);
+  color: #ffffff;
+}
+
+.comic-title {
+  font-size: 3rem;
+  color: #ffffff;
+  text-shadow: 2px 2px #ff0000;
+  margin-bottom: 20px;
+}
+
+.comic-subtitle {
+  font-size: 1.5rem;
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+.comic-label {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #cccccc;
+}
+
+.comic-image {
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.comic-powerstats-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comic-powerstats-list li {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.comic-button {
+  background: #007bff;
+  color: #ffffff;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.comic-button:hover {
+  background: #0056b3;
+}
+
+.comic-clear-button {
+  background: #ff0000;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+.comic-clear-button:hover {
+  background: #cc0000;
+}
+
+.comic-commentary-title {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-top: 30px;
+}
+
+.comic-commentary {
+  font-size: 1.2rem;
+  color: #cccccc;
+  line-height: 1.5;
+}
+
+/* Home Styles */
+.moving-background {
+  background: linear-gradient(to right, #1a1a1a, #333333);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.card-title {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.card-text {
+  font-size: 1.1rem;
+  color: #000000;
+  margin-left: 10px;
+}
+
+/* Header Styles */
+.header {
+  background: linear-gradient(to right, #007bff, #0056b3);
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  font-size: 2.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: red;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.header a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  margin: 0 15px;
+  transition: color 0.3s;
+}
+
+.header a:hover {
+  color: #ff0000;
+}
+
+.header-icon {
+  margin-right: 10px;
+  color: #ffeb3b;
+  font-size: 2rem;
+}
+
+/* Footer Styles */
+.footer {
+  background: linear-gradient(to right, #007bff, #0056b3);
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+
+  

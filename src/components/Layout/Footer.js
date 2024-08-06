@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import '../HeroVsVillain.css'; // Ensure this path is correct based on your project structure
+import '../../styles.css'; // Ensure this path is correct based on your project structure
 
 const Footer = () => {
   return (

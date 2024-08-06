@@ -2,8 +2,6 @@
   "name": "hero-vs-villain",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://elbaton1.github.io/SuperBattle"
-,
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
