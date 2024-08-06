@@ -20,7 +20,7 @@ const HeroVsVillain = () => {
   const [searchTerm2, setSearchTerm2] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const OPENAI_API_KEY = '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';
+  const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
   useEffect(() => {
     const hero1 = heroesData.find(hero => hero.id === hero1Id);
