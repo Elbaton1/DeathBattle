@@ -5,6 +5,7 @@ import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 import HeroVsVillain from './components/HeroVsVillain';
 import Home from './components/Home';
+import About from './components/About';  // Import the About component
 
 const theme = createTheme({
   typography: {
@@ -20,8 +21,9 @@ function App() {
         <div className="App">
           <Header />
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/battle" element={<HeroVsVillain />} />
+            <Route path="/about" element={<About />} />  {/* Add the About route */}
           </Routes>
           <Footer />
         </div>
@@ -31,6 +33,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

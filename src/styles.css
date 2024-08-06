@@ -18,7 +18,7 @@ body {
 
 .title {
   font-size: 3.5rem;
-  color: #ffffff;
+  color: #000000;
   text-shadow: 2px 2px #ff0000;
   margin-bottom: 20px;
 }
@@ -36,7 +36,7 @@ body {
   padding: 15px 30px;
   border-radius: 15px;
   margin-top: 20px;
-  
+  transition: background 0.3s;
 }
 
 .button:hover {
@@ -189,8 +189,8 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-
-  background: red;
+  color: #000;
+  background-color: #ff0000;
   opacity: 0.1;
   z-index: 0;
 }
@@ -228,7 +228,60 @@ body {
   position: fixed;
   width: 100%;
   bottom: 0;
-  display: none;
 }
 
-  
+/* Modal Styles */
+.winner-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #1a1a1a;
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding: 20px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 10px;
+}
+
+/* About Styles */
+.about-container {
+  background: linear-gradient(to right, #1a1a1a, #333333);
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.about-title {
+  font-size: 3rem;
+  color: #000000;
+  text-shadow: 2px 2px #ff0000;
+  margin-bottom: 20px;
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+.about-box {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.about-section-title {
+  font-size: 2rem;
+  color: #ff0000;
+  margin-bottom: 10px;
+}
+
+.about-text {
+  font-size: 1.2rem;
+  color: #000000;
+  line-height: 1.5;
+}

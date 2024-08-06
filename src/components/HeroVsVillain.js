@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Button, Typography, MenuItem, Select, Grid, Card, CardContent, CardMedia, Paper, TextField, InputAdornment } from '@mui/material';
+import { Container, Box, Button, Typography, MenuItem, Select, Grid, Card, CardContent, CardMedia, Paper, TextField, InputAdornment, Modal, Backdrop, Fade } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import heroesData from '../api/all.json';
@@ -13,6 +13,7 @@ const HeroVsVillain = () => {
   const [battleDetails, setBattleDetails] = useState(null);
   const [searchTerm1, setSearchTerm1] = useState('');
   const [searchTerm2, setSearchTerm2] = useState('');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const hero1 = heroesData.find(hero => hero.id === hero1Id);
@@ -50,27 +51,21 @@ const HeroVsVillain = () => {
       winner = 'Draw';
     }
 
-    const strengthsWeaknesses = {
-      hero1: hero1.biography,
-      hero2: hero2.biography,
-    };
-
     const narrative = generateBattleNarrative(hero1, hero2, statComparison, winner);
 
     return {
       winner,
       statComparison,
-      strengthsWeaknesses,
       narrative,
     };
   };
 
   const generateBattleNarrative = (hero1, hero2, statComparison, winner) => {
-    let narrative = `In an epic battle between ${hero1.name} and ${hero2.name}, both heroes fought valiantly. `;
+    let narrative = `In an epic battle between ${hero1.name} and ${hero2.name}, both characters fought valiantly. `;
     narrative += `${hero1.name} started off strong, leveraging their ${statComparison.intelligence || 'intelligence'} and ${statComparison.strength || 'strength'} to gain an advantage. `;
     narrative += `${hero2.name}, however, was not to be outdone and countered with their superior ${statComparison.speed || 'speed'} and ${statComparison.combat || 'combat skills'}. `;
     narrative += `Throughout the battle, ${hero1.name} demonstrated ${hero1.biography.alignment} qualities, while ${hero2.name} showed ${hero2.biography.alignment} traits. `;
-    narrative += `In the end, ${winner === 'Draw' ? 'neither hero emerged as the clear winner, resulting in a draw' : `${winner} emerged as the victor due to their superior ${statComparison[Object.keys(statComparison).find(stat => stat.includes(winner.toLowerCase()))]}`}.`;
+    narrative += `In the end, ${winner === 'Draw' ? 'neither character emerged as the clear winner, resulting in a draw' : `${winner} emerged as the victor due to their superior ${statComparison[Object.keys(statComparison).find(stat => stat.includes(winner.toLowerCase()))]}`}.`;
 
     return narrative;
   };
@@ -79,6 +74,7 @@ const HeroVsVillain = () => {
     if (hero1 && hero2) {
       const details = determineWinner(hero1, hero2);
       setBattleDetails(details);
+      setOpen(true);
     }
   };
 
@@ -110,6 +106,10 @@ const HeroVsVillain = () => {
     setSearchTerm2('');
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const filteredHeroes1 = heroesData.filter(hero =>
     hero.name.toLowerCase().includes(searchTerm1.toLowerCase())
   );
@@ -125,7 +125,7 @@ const HeroVsVillain = () => {
           DEATH BATTLE AI
         </Typography>
         <Typography variant="h6" className="comic-subtitle" gutterBottom>
-          Select two superheroes or villains to see who would win based on their stats, and generate a detailed battle scene.
+          Select two characters to see who would win based on their stats, and generate a detailed battle scene. It's not just superheroes and villains, it's all kinds of sci-fi characters!
         </Typography>
         <Paper sx={{ p: 2, mb: 4, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <Grid container spacing={3}>
@@ -134,7 +134,7 @@ const HeroVsVillain = () => {
                 fullWidth
                 value={searchTerm1}
                 onChange={handleSearchChange1}
-                placeholder="Search for a hero..."
+                placeholder="Search for a character..."
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -143,7 +143,7 @@ const HeroVsVillain = () => {
                   ),
                 }}
               />
-              <Typography variant="h6" className="comic-label">Hero 1</Typography>
+              <Typography variant="h6" className="comic-label">Character 1</Typography>
               <Select
                 fullWidth
                 value={hero1Id}
@@ -169,6 +169,21 @@ const HeroVsVillain = () => {
                       <li>Power: {hero1.powerstats.power}</li>
                       <li>Combat: {hero1.powerstats.combat}</li>
                     </ul>
+                    <Typography variant="body1" className="comic-hero-summary">
+                      <strong>Publisher:</strong> {hero1.biography.publisher}<br />
+                      <strong>First Appearance:</strong> {hero1.biography.firstAppearance}<br />
+                      <strong>Full Name:</strong> {hero1.biography.fullName}<br />
+                      <strong>Aliases:</strong> {hero1.biography.aliases.join(', ')}
+                    </Typography>
+                    <Typography variant="body1" className="comic-hero-appearance">
+                      <strong>Appearance:</strong><br />
+                      <strong>Gender:</strong> {hero1.appearance.gender}<br />
+                      <strong>Race:</strong> {hero1.appearance.race}<br />
+                      <strong>Height:</strong> {hero1.appearance.height.join(' / ')}<br />
+                      <strong>Weight:</strong> {hero1.appearance.weight.join(' / ')}<br />
+                      <strong>Eye Color:</strong> {hero1.appearance.eyeColor}<br />
+                      <strong>Hair Color:</strong> {hero1.appearance.hairColor}
+                    </Typography>
                   </CardContent>
                 </Card>
               )}
@@ -178,7 +193,7 @@ const HeroVsVillain = () => {
                 fullWidth
                 value={searchTerm2}
                 onChange={handleSearchChange2}
-                placeholder="Search for a hero..."
+                placeholder="Search for a character..."
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -187,7 +202,7 @@ const HeroVsVillain = () => {
                   ),
                 }}
               />
-              <Typography variant="h6" className="comic-label">Hero 2</Typography>
+              <Typography variant="h6" className="comic-label">Character 2</Typography>
               <Select
                 fullWidth
                 value={hero2Id}
@@ -213,6 +228,21 @@ const HeroVsVillain = () => {
                       <li>Power: {hero2.powerstats.power}</li>
                       <li>Combat: {hero2.powerstats.combat}</li>
                     </ul>
+                    <Typography variant="body1" className="comic-hero-summary">
+                      <strong>Publisher:</strong> {hero2.biography.publisher}<br />
+                      <strong>First Appearance:</strong> {hero2.biography.firstAppearance}<br />
+                      <strong>Full Name:</strong> {hero2.biography.fullName}<br />
+                      <strong>Aliases:</strong> {hero2.biography.aliases.join(', ')}
+                    </Typography>
+                    <Typography variant="body1" className="comic-hero-appearance">
+                      <strong>Appearance:</strong><br />
+                      <strong>Gender:</strong> {hero2.appearance.gender}<br />
+                      <strong>Race:</strong> {hero2.appearance.race}<br />
+                      <strong>Height:</strong> {hero2.appearance.height.join(' / ')}<br />
+                      <strong>Weight:</strong> {hero2.appearance.weight.join(' / ')}<br />
+                      <strong>Eye Color:</strong> {hero2.appearance.eyeColor}<br />
+                      <strong>Hair Color:</strong> {hero2.appearance.hairColor}
+                    </Typography>
                   </CardContent>
                 </Card>
               )}
@@ -244,18 +274,32 @@ const HeroVsVillain = () => {
                   </div>
                 ))}
               </Typography>
-              <Typography variant="h4" className="comic-commentary-title">Strengths & Weaknesses</Typography>
-              <Typography variant="body1" className="comic-commentary" paragraph>
-                {battleDetails.hero1}: {battleDetails.strengthsWeaknesses.hero1.alignment}
-                <br />
-                {battleDetails.hero2}: {battleDetails.strengthsWeaknesses.hero2.alignment}
-              </Typography>
               <Typography variant="h4" className="comic-commentary-title">Battle Narrative</Typography>
               <Typography variant="body1" className="comic-commentary" paragraph>
                 {battleDetails.narrative}
               </Typography>
             </Box>
           )}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <Box className="winner-modal">
+                <Typography id="transition-modal-title" variant="h4" component="h2">
+                  Battle Winner
+                </Typography>
+                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                  {battleDetails && battleDetails.winner}
+                </Typography>
+              </Box>
+            </Fade>
+          </Modal>
         </Paper>
       </Box>
     </Container>
@@ -263,6 +307,9 @@ const HeroVsVillain = () => {
 };
 
 export default HeroVsVillain;
+
+
+
 
 
 

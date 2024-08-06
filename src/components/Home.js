@@ -38,7 +38,7 @@ const Home = () => {
           Welcome to DEATH BATTLE AI
         </Typography>
         <Typography variant="h6" className="subtitle" gutterBottom>
-          Discover epic battles between your favorite superheroes and villains, powered by AI!
+          Discover epic battles between your favorite heroes and villains, soon to be powered by AI!
         </Typography>
         <Button variant="contained" component={Link} to="/battle" className="button">
           Start a Battle
