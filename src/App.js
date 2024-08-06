@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
+import HeroVsVillain from './components/HeroVsVillain';
+import Home from './components/Home';
 
-function App() {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2193b0',
+    },
+    secondary: {
+      main: '#6dd5ed',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/battle" element={<HeroVsVillain />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
+
+
+
+
+
+
+
+
+
