@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/DeathBattle/static/css/main.16934185.css",
-    "main.js": "/DeathBattle/static/js/main.cb0d4b05.js",
+    "main.css": "/DeathBattle/static/css/main.2cea047e.css",
+    "main.js": "/DeathBattle/static/js/main.059e4aa0.js",
     "static/media/image2.jpg": "/DeathBattle/static/media/image2.7ed7353405b01557ab52.jpg",
     "static/media/image1.jpg": "/DeathBattle/static/media/image1.5968eeaecaf8da934ca0.jpg",
     "static/media/image3.jpg": "/DeathBattle/static/media/image3.c3e2402093c97fb34057.jpg",
     "index.html": "/DeathBattle/index.html",
-    "main.16934185.css.map": "/DeathBattle/static/css/main.16934185.css.map",
-    "main.cb0d4b05.js.map": "/DeathBattle/static/js/main.cb0d4b05.js.map"
+    "main.2cea047e.css.map": "/DeathBattle/static/css/main.2cea047e.css.map",
+    "main.059e4aa0.js.map": "/DeathBattle/static/js/main.059e4aa0.js.map"
   },
   "entrypoints": [
-    "static/css/main.16934185.css",
-    "static/js/main.cb0d4b05.js"
+    "static/css/main.2cea047e.css",
+    "static/js/main.059e4aa0.js"
   ]
 }
